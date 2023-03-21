@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="styles.css">
+    <script>
+    </script>
+
+</head>
+
+<body>
+    <div class="row">
+        <canvas id="glcanvas">
+            Oops ... your browser doesn't support the HTML5 canvas element
+        </canvas>
+        <div class="action-bar">
+            <h3>Object</h3>
+            <div>
+                <label for="object">Object Type:</label>
+                <input type="radio" name="object" value="cube" checked>Cube
+                <input type="radio" name="object" value="???">???
+            </div>
+            <br>
+
+            <h3>Projection</h3>
+            <div>
+                <label for="projection">Projection Type:</label>
+                <input type="radio" name="projection" value="orthographic" checked>Orthographic
+                <input type="radio" name="projection" value="oblique">Oblique
+                <input type="radio" name="projection" value="perspective">Perspective
+            </div>
+            <br>
+
+            <h3>Change Object</h3>
+            <div>
+                <label for="rotateX">Rotate X:</label>
+                <input type="range" name="rotateX" min="-180" max="180" value="0" id="rotateX"
+                    oninput="this.nextElementSibling.value = this.value">
+                <output>0</output>
+
+                <label for="rotateY">Rotate Y:</label>
+                <input type="range" name="rotateY" min="-180" max="180" value="0" id="rotateY"
+                    oninput="this.nextElementSibling.value = this.value">
+                <output>0</output>
+
+                <label for="rotateZ">Rotate Z:</label>
+                <input type="range" name="rotateZ" min="-180" max="180" value="30" id="rotateZ"
+                    oninput="this.nextElementSibling.value = this.value">
+                <output>0</output>
+            </div>
+            <br>
+
+            <div>
+                <label for="translationX">Translation X:</label>
+                <input type="range" name="translationX" min="-100" max="100" value="0" id="translationX"
+                    oninput="this.nextElementSibling.value = this.value">
+                <output>0</output>
+
+                <label for="translationY">Translation Y:</label>
+                <input type="range" name="translationY" min="-100" max="100" value="0" id="translationY"
+                    oninput="this.nextElementSibling.value = this.value">
+                <output>0</output>
+
+                <label for="translationZ">Translation Z:</label>
+                <input type="range" name="translationZ" min="-100" max="100" value="0" id="translationZ"
+                    oninput="this.nextElementSibling.value = this.value">
+                <output>0</output>
+            </div>
+            <br>
+
+            <div>
+                <label for="scaleX">Scale X:</label>
+                <input type="range" name="scaleX" min="0" max="5" value="1" step="0.1" id="scaleX"
+                    oninput="this.nextElementSibling.value = this.value">
+                <output>1</output>
+
+                <label for="scaleY">Scale Y:</label>
+                <input type="range" name="scaleY" min="0" max="5" value="1" step="0.1" id="scaleY"
+                    oninput="this.nextElementSibling.value = this.value">
+                <output>1</output>
+
+                <label for="scaleZ">Scale Z:</label>
+                <input type="range" name="scaleZ" min="0" max="5" value="1" step="0.1" id="scaleZ"
+                    oninput="this.nextElementSibling.value = this.value">
+                <output>1</output>
+            </div>
+            <br>
+
+            <h3>Camera</h3>
+            <div>
+                <label for="cam-angle">Angle:</label>
+                <input type="range" name="cam-angle" min="0" id="cam-angle" max="360" value="60"
+                    oninput="this.nextElementSibling.value = this.value">
+                <output>60</output>
+
+                <label for="cam-zoom">Zoom:</label>
+                <input type="range" name="cam-zoom" min="0" id="cam-zoom" max="1" step="0.005" value="0.1"
+                    oninput="this.nextElementSibling.value = this.value">
+                <output>0.1</output>
+            </div>
+            <br>
+
+            <div>
+                <input type="reset" id="reset" name="reset" value="Reset">
+            </div>
+        </div>
+    </div>
+
+</body>
+
+<script>
+    var vertices = [];
+    var objects = [];
+
+    const canvas = document.querySelector('#glcanvas');
+    canvas.width = 600;
+    canvas.height = 400;
+
+    // Initialize the GL context
+    const gl = canvas.getContext('webgl');
+
+    if (!gl) {
+        alert('Unable to initialize WebGL. Your browser or machine may not support it.');
+    }
+
+    // Vertex shader source code
+    var vertCode = 'attribute vec3 position;' +
+        'uniform mat4 Pmatrix;' +
+        'uniform mat4 Mmatrix;' +
+        'attribute vec3 color;' +//the color of the point
+        'varying vec3 vColor;' +
+        'void main(void) { ' +//pre-built function
+        'gl_Position = Pmatrix*Mmatrix*vec4(position, 1.);' +
+        'vColor = color;' +
+        '}';;
+
+    // Create a vertex shader object
+    var vertShader = gl.createShader(gl.VERTEX_SHADER);
+
+    // Fragment shader source code
+    var fragCode = 'precision mediump float;' +
+        'varying vec3 vColor;' +
+        'void main(void) {' +
+        'gl_FragColor = vec4(vColor, 1.);' +
+        '}';
+
+    // Create fragment shader object
+    var fragShader = gl.createShader(gl.FRAGMENT_SHADER);
+
+    // Create a shader program object to store
+    var shaderProgram = gl.createProgram();
+
+    function setupShader() {
+        // Attach vertex shader source code
+        gl.shaderSource(vertShader, vertCode);
+        // Compile the vertex shader
+        gl.compileShader(vertShader);
+        // Attach fragment shader source code
+        gl.shaderSource(fragShader, fragCode);
+        // Compile the fragmentt shader
+        gl.compileShader(fragShader);
+    }
+
+    function setupProgram() {
+        // Attach a vertex shader
+        gl.attachShader(shaderProgram, vertShader);
+        // Attach a fragment shader
+        gl.attachShader(shaderProgram, fragShader);
+        // Link both the programs
+        gl.linkProgram(shaderProgram);
+    }
+
+    setupShader();
+    setupProgram();
+</script>
+<script type="text/javascript" src="script/matrixOperator.js"></script>
+<script type="text/javascript" src="script/cube.js"></script>
+
+</html>

@@ -1,0 +1,24 @@
+body,
+html {
+    font-family: Lato, Helvetica, sans-serif;
+    height: 100%;
+    margin: 0;
+    scroll-behavior: smooth;
+}
+
+canvas {
+    width: 600px;
+    height: 600px;
+    position: relative;
+    margin-left: 20px;
+    margin-top: 20px;
+    border: 1px solid #ccc;
+}
+
+.row {
+    display: flex;
+}
+
+.action-bar {
+    margin-left: 20px;
+}
