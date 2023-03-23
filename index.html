@@ -90,14 +90,14 @@
             <h3>Camera</h3>
             <div>
                 <label for="cam-angle">Angle:</label>
-                <input type="range" name="cam-angle" min="0" id="cam-angle" max="360" value="60"
-                    oninput="this.nextElementSibling.value = this.value">
-                <output>60</output>
+                <input type="range" name="cam-angle" min="0" id="cam-angle" max="360" value="0"
+                    oninput="camAngle(this)">
+                <output>0</output>
 
                 <label for="cam-zoom">Zoom:</label>
-                <input type="range" name="cam-zoom" min="0" id="cam-zoom" max="1" step="0.005" value="0.1"
-                    oninput="this.nextElementSibling.value = this.value">
-                <output>0.1</output>
+                <input type="range" name="cam-zoom" min="0" id="cam-zoom" max="3" step="0.05" value="1"
+                    oninput="camZoom(this)">
+                <output>1</output>
             </div>
             <br>
 
@@ -125,15 +125,21 @@
     }
 
     // Vertex shader source code
-    var vertCode = 'attribute vec3 position;' +
-        'uniform mat4 Pmatrix;' +
-        'uniform mat4 Mmatrix;' +
-        'attribute vec3 color;' +//the color of the point
-        'varying vec3 vColor;' +
-        'void main(void) { ' +//pre-built function
-        'gl_Position = Pmatrix*Mmatrix*vec4(position, 1.);' +
-        'vColor = color;' +
-        '}';
+    var vertCode = `
+            attribute vec3 position;
+
+            uniform mat4 Pmatrix;
+            uniform mat4 Vmatrix;
+            uniform mat4 Mmatrix;
+
+            attribute vec3 color;
+            varying vec3 vColor;
+
+            void main(void) {
+                gl_Position = Pmatrix*Vmatrix*Mmatrix*vec4(position, 1.);
+                vColor = color;
+            }
+            `;
 
     // Create a vertex shader object
     var vertShader = gl.createShader(gl.VERTEX_SHADER);
