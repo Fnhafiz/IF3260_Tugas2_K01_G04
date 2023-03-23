@@ -3,9 +3,8 @@
 
 <head>
     <link rel="stylesheet" href="styles.css">
-    <script>
-    </script>
-
+    <script type="text/javascript" src="script/math.js"></script>
+    <script type="text/javascript" src="script/function.js"></script>
 </head>
 
 <body>
@@ -34,19 +33,19 @@
 
             <h3>Change Object</h3>
             <div>
-                <label for="rotateX">Rotate X:</label>
-                <input type="range" name="rotateX" min="-180" max="180" value="0" id="rotateX"
-                    oninput="this.nextElementSibling.value = this.value">
+                <label for="rotationX">Rotate X:</label>
+                <input type="range" name="rotationX" min="-180" max="180" value="0" id="rotationX"
+                    oninput="slideRotate(0, this)">
                 <output>0</output>
 
-                <label for="rotateY">Rotate Y:</label>
-                <input type="range" name="rotateY" min="-180" max="180" value="0" id="rotateY"
-                    oninput="this.nextElementSibling.value = this.value">
+                <label for="rotationY">Rotate Y:</label>
+                <input type="range" name="rotationY" min="-180" max="180" value="0" id="rotationY"
+                    oninput="slideRotate(1, this)">
                 <output>0</output>
 
-                <label for="rotateZ">Rotate Z:</label>
-                <input type="range" name="rotateZ" min="-180" max="180" value="30" id="rotateZ"
-                    oninput="this.nextElementSibling.value = this.value">
+                <label for="rotationZ">Rotate Z:</label>
+                <input type="range" name="rotationZ" min="-180" max="180" value="0" id="rotationZ"
+                    oninput="slideRotate(2, this)">
                 <output>0</output>
             </div>
             <br>
@@ -54,35 +53,35 @@
             <div>
                 <label for="translationX">Translation X:</label>
                 <input type="range" name="translationX" min="-100" max="100" value="0" id="translationX"
-                    oninput="this.nextElementSibling.value = this.value">
+                    oninput="slideTranslate(0, this)">
                 <output>0</output>
 
                 <label for="translationY">Translation Y:</label>
                 <input type="range" name="translationY" min="-100" max="100" value="0" id="translationY"
-                    oninput="this.nextElementSibling.value = this.value">
+                    oninput="slideTranslate(1, this)">
                 <output>0</output>
 
                 <label for="translationZ">Translation Z:</label>
                 <input type="range" name="translationZ" min="-100" max="100" value="0" id="translationZ"
-                    oninput="this.nextElementSibling.value = this.value">
+                    oninput="slideTranslate(2, this)">
                 <output>0</output>
             </div>
             <br>
 
             <div>
-                <label for="scaleX">Scale X:</label>
-                <input type="range" name="scaleX" min="0" max="5" value="1" step="0.1" id="scaleX"
-                    oninput="this.nextElementSibling.value = this.value">
+                <label for="scalingX">Scale X:</label>
+                <input type="range" name="scalingX" min="0" max="5" value="1" step="0.1" id="scalingX"
+                    oninput="slideScale(0, this)">
                 <output>1</output>
 
-                <label for="scaleY">Scale Y:</label>
-                <input type="range" name="scaleY" min="0" max="5" value="1" step="0.1" id="scaleY"
-                    oninput="this.nextElementSibling.value = this.value">
+                <label for="scalingY">Scale Y:</label>
+                <input type="range" name="scalingY" min="0" max="5" value="1" step="0.1" id="scalingY"
+                    oninput="slideScale(1, this)">
                 <output>1</output>
 
-                <label for="scaleZ">Scale Z:</label>
-                <input type="range" name="scaleZ" min="0" max="5" value="1" step="0.1" id="scaleZ"
-                    oninput="this.nextElementSibling.value = this.value">
+                <label for="scalingZ">Scale Z:</label>
+                <input type="range" name="scalingZ" min="0" max="5" value="1" step="0.1" id="scalingZ"
+                    oninput="slideScale(2, this)">
                 <output>1</output>
             </div>
             <br>

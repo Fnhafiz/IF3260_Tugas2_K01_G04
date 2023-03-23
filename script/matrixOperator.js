@@ -24,9 +24,9 @@ function yRotation(angleInRadians) {
     var s = Math.sin(angleInRadians);
 
     return [
-        c, 0, s, 0,
+        c, 0, -s, 0,
         0, 1, 0, 0,
-        -s, 0, c, 0,
+        s, 0, c, 0,
         0, 0, 0, 1,
     ];
 }
@@ -43,7 +43,37 @@ function zRotation(angleInRadians) {
     ];
 }
 
+function scaling(sx, sy, sz) {
+    return [
+        sx, 0, 0, 0,
+        0, sy, 0, 0,
+        0, 0, sz, 0,
+        0, 0, 0, 1,
+    ];
+}
+
+function translate(m, tx, ty, tz) {
+    return multiply(m, translation(tx, ty, tz));
+}
+
+function xRotate(m, angleInRadians) {
+    return multiply(m, xRotation(angleInRadians));
+}
+
+function yRotate(m, angleInRadians) {
+    return multiply(m, yRotation(angleInRadians));
+}
+
+function zRotate(m, angleInRadians) {
+    return multiply(m, zRotation(angleInRadians));
+}
+
+function scale(m, sx, sy, sz) {
+    return multiply(m, scaling(sx, sy, sz));
+}
+
 function multiply(a, b) {
+    // returns b * a
     var a00 = a[0 * 4 + 0];
     var a01 = a[0 * 4 + 1];
     var a02 = a[0 * 4 + 2];
