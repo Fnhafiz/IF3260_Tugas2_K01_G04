@@ -1,6 +1,5 @@
 var checked = document.querySelector('input[name="object"]:checked').value;
 var current = checked;
-console.log(current);
 
 if (checked == "cube") {
     var vertices = verticesCube.slice();
@@ -35,6 +34,7 @@ var mo_matrix = [   1, 0, 0, 0,
 var translationVar = [0, 0, 0];
 var rotationVar = [-Math.PI/4, 0, Math.PI/4];
 var scalingVar = [1, 1, 1];
+var currentScaleAll = 1;
 
 // initialize sliders
 document.getElementById("rotationX").value = convRadToDeg(rotationVar[0]);
@@ -86,7 +86,7 @@ function drawScene() {
     gl.clearDepth(1.0);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-    gl.enable(gl.CULL_FACE);
+    // gl.enable(gl.CULL_FACE);
     gl.enable(gl.DEPTH_TEST);
 
     gl.useProgram(shaderProgram);
