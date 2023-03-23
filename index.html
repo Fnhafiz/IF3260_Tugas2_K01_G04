@@ -16,8 +16,8 @@
             <h3>Object</h3>
             <div>
                 <label for="object">Object Type:</label>
-                <input type="radio" name="object" value="cube" checked>Cube
-                <input type="radio" name="object" value="confusing">Confusing
+                <input type="radio" name="object" value="cube" id="cube" checked>Cube
+                <input type="radio" name="object" value="confusing" id="confusing">Confusing
                 <input type="radio" name="object" value="???">???
             </div>
             <br>
@@ -130,8 +130,8 @@
         'attribute vec3 color;' +//the color of the point
         'varying vec3 vColor;' +
         'void main(void) { ' +//pre-built function
-            'gl_Position = Pmatrix*Mmatrix*vec4(position, 1.);' +
-            'vColor = color;' +
+        'gl_Position = Pmatrix*Mmatrix*vec4(position, 1.);' +
+        'vColor = color;' +
         '}';
 
     // Create a vertex shader object
@@ -141,7 +141,7 @@
     var fragCode = 'precision mediump float;' +
         'varying vec3 vColor;' +
         'void main(void) {' +
-            'gl_FragColor = vec4(vColor, 1.);' +
+        'gl_FragColor = vec4(vColor, 1.);' +
         '}';
 
     // Create fragment shader object
