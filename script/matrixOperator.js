@@ -43,6 +43,15 @@ function zRotation(angleInRadians) {
     ];
 }
 
+function scale(sx, sy, sz) {
+    return [
+        sx, 0, 0, 0,
+        0, sy, 0, 0,
+        0, 0, sz, 0,
+        0, 0, 0, 1,
+    ];
+}
+
 function multiply(a, b) {
     var a00 = a[0 * 4 + 0];
     var a01 = a[0 * 4 + 1];
