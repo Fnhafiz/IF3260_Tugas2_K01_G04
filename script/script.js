@@ -1,14 +1,16 @@
 var checked = document.querySelector('input[name="object"]:checked').value;
 var current = checked;
 
-if (checked == "cube") {
-    var vertices = verticesCube.slice();
-    var colors = colorsCube.slice();
-}
-else {
-    var vertices = verticesConfusing.slice();
-    var colors = colorsConfusing.slice();
-}
+var vertices = [];
+var colors = [];
+var verticesLoad = [];
+var colorsLoad = [];
+var count = 0;
+var countLoad = [];
+
+vertices = verticesCube.slice();
+colors = colorsCube.slice();
+count = countCube;
 
 // create vertex and color buffer
 var vertex_buffer = gl.createBuffer();
@@ -78,10 +80,18 @@ function drawScene() {
         if (checked == "cube") {
             vertices = verticesCube.slice();
             colors = colorsCube.slice();
+            count = countCube;
         }
-        else {
+        else if (checked == "confusing") {
             vertices = verticesConfusing.slice();
             colors = colorsConfusing.slice();
+            count = countConfusing;
+        }
+        else {
+            id = checked.slice(-1);
+            vertices = verticesLoad[id].slice();
+            colors = colorsLoad[id].slice();
+            count = countLoad[id];
         }
     }
 
@@ -135,7 +145,7 @@ function drawScene() {
     gl.uniformMatrix4fv(_Mmatrix, false, mo_matrix);
 
     // gambar hollow object
-    for (var i = 0; i < 48; i++) {
+    for (var i = 0; i < count; i++) {
         gl.drawArrays(gl.TRIANGLE_FAN, i * 4, 4);
     }
 }
