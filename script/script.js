@@ -1,0 +1,120 @@
+var checked = document.querySelector('input[name="object"]:checked').value;
+var current = checked;
+console.log(current);
+
+if (checked == "cube") {
+    var vertices = verticesCube.slice();
+    var colors = colorsCube.slice();
+}
+else {
+    var vertices = verticesConfusing.slice();
+    var colors = colorsConfusing.slice();
+}
+
+// create vertex and color buffer
+var vertex_buffer = gl.createBuffer();
+var color_buffer = gl.createBuffer();
+
+// lookup uniforms
+var _Pmatrix = gl.getUniformLocation(shaderProgram, "Pmatrix");
+var _Mmatrix = gl.getUniformLocation(shaderProgram, "Mmatrix");
+
+// lookup attributes
+var _position = gl.getAttribLocation(shaderProgram, "position");
+var _color = gl.getAttribLocation(shaderProgram, "color");
+
+// inisialisasi matriks transformasi geometri
+var proj_matrix = [ 1, 0, 0, 0, 
+                    0, 1, 0, 0, 
+                    0, 0, 1, 0, 
+                    0, 0, 0, 1  ];
+var mo_matrix = [   1, 0, 0, 0, 
+                    0, 1, 0, 0, 
+                    0, 0, 1, 0, 
+                    0, 0, 0, 1  ];
+var translationVar = [0, 0, 0];
+var rotationVar = [-Math.PI/4, 0, Math.PI/4];
+var scalingVar = [1, 1, 1];
+
+// initialize sliders
+document.getElementById("rotationX").value = convRadToDeg(rotationVar[0]);
+document.getElementById("rotationX").nextElementSibling.value = convRadToDeg(rotationVar[0]);
+document.getElementById("rotationY").value = convRadToDeg(rotationVar[1]);
+document.getElementById("rotationY").nextElementSibling.value = convRadToDeg(rotationVar[1]);
+document.getElementById("rotationZ").value = convRadToDeg(rotationVar[2]);
+document.getElementById("rotationZ").nextElementSibling.value = convRadToDeg(rotationVar[2]);
+document.getElementById("translationX").value = translationVar[0];
+document.getElementById("translationX").nextElementSibling.value = translationVar[0];
+document.getElementById("translationY").value = translationVar[1];
+document.getElementById("translationY").nextElementSibling.value = translationVar[1];
+document.getElementById("translationZ").value = translationVar[2];
+document.getElementById("translationZ").nextElementSibling.value = translationVar[2];
+document.getElementById("scalingX").value = scalingVar[0];
+document.getElementById("scalingX").nextElementSibling.value = scalingVar[0];
+document.getElementById("scalingY").value = scalingVar[1];
+document.getElementById("scalingY").nextElementSibling.value = scalingVar[1];
+document.getElementById("scalingZ").value = scalingVar[2];
+document.getElementById("scalingZ").nextElementSibling.value = scalingVar[2];
+drawScene();
+
+function drawScene() {
+    checked = document.querySelector('input[name="object"]:checked').value;
+    if (checked != current) {
+        current = checked;
+        vertices.length = 0
+        colors.length = 0;
+        if (checked == "cube") {
+            vertices = verticesCube.slice();
+            colors = colorsCube.slice();
+        }
+        else {
+            vertices = verticesConfusing.slice();
+            colors = colorsConfusing.slice();
+        }
+    }
+
+    // store data into vertex and color buffer
+    gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+
+    // create and store data into color buffer
+    gl.bindBuffer(gl.ARRAY_BUFFER, color_buffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
+
+    gl.viewport(0.0, 0.0, canvas.width, canvas.height);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clearDepth(1.0);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+    gl.enable(gl.CULL_FACE);
+    gl.enable(gl.DEPTH_TEST);
+
+    gl.useProgram(shaderProgram);
+
+    gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
+    gl.vertexAttribPointer(_position, 3, gl.FLOAT, false, 0, 0);
+    gl.enableVertexAttribArray(_position);
+    
+    gl.bindBuffer(gl.ARRAY_BUFFER, color_buffer);
+    gl.vertexAttribPointer(_color, 3, gl.FLOAT, false, 0, 0);
+    gl.enableVertexAttribArray(_color);
+
+    // perbarui sesuai slider
+    var mo_matrix = [   1, 0, 0, 0, 
+                        0, 1, 0, 0, 
+                        0, 0, 1, 0, 
+                        0, 0, 0, 1  ];
+    mo_matrix = translate(mo_matrix, translationVar[0], translationVar[1], translationVar[2]);
+    mo_matrix = xRotate(mo_matrix, rotationVar[0]);
+    mo_matrix = yRotate(mo_matrix, rotationVar[1]);
+    mo_matrix = zRotate(mo_matrix, rotationVar[2]);
+    mo_matrix = scale(mo_matrix, scalingVar[0], scalingVar[1], scalingVar[2]);
+    
+    gl.uniformMatrix4fv(_Pmatrix, false, proj_matrix);
+    gl.uniformMatrix4fv(_Mmatrix, false, mo_matrix);
+    
+    // gambar hollow object
+    for (var i = 0; i < 48; i++) {
+        gl.drawArrays(gl.TRIANGLE_FAN, i * 4, 4);
+    }
+}
