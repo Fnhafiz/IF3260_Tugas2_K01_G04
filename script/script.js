@@ -3,6 +3,7 @@ var current = checked;
 
 var vertices = [];
 var colors = [];
+var normals = [];
 var verticesLoad = [];
 var colorsLoad = [];
 var verticesMulti = [];
@@ -18,15 +19,18 @@ count = countCube;
 // create vertex and color buffer
 var vertex_buffer = gl.createBuffer();
 var color_buffer = gl.createBuffer();
+var normal_buffer = gl.createBuffer();
 
 // lookup uniforms
 var _Pmatrix = gl.getUniformLocation(shaderProgram, "Pmatrix");
 var _Vmatrix = gl.getUniformLocation(shaderProgram, "Vmatrix");
 var _Mmatrix = gl.getUniformLocation(shaderProgram, "Mmatrix");
+var _Nmatrix = gl.getUniformLocation(shaderProgram, "Nmatrix");
 
 // lookup attributes
 var _position = gl.getAttribLocation(shaderProgram, "position");
 var _color = gl.getAttribLocation(shaderProgram, "color");
+var _normal = gl.getAttribLocation(shaderProgram, "normal");
 
 // inisialisasi matriks transformasi geometri
 var proj_matrix = [1, 0, 0, 0,
@@ -109,6 +113,9 @@ function drawScene() {
         count = countMulti;
     }
 
+    let check_shading = document.getElementById('shading');
+    isShading = check_shading.checked;
+
     // store data into vertex and color buffer
     gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
@@ -116,6 +123,12 @@ function drawScene() {
     // create and store data into color buffer
     gl.bindBuffer(gl.ARRAY_BUFFER, color_buffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
+
+    normal = getNormalVector(vertices);
+    gl.bindBuffer(gl.ARRAY_BUFFER, normal_buffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(normal), gl.STATIC_DRAW);
+    console.log(normal);
+
 
     gl.viewport(0.0, 0.0, canvas.width, canvas.height);
     gl.clearColor(0, 0, 0, 0);
@@ -135,6 +148,11 @@ function drawScene() {
     gl.bindBuffer(gl.ARRAY_BUFFER, color_buffer);
     gl.vertexAttribPointer(_color, 3, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(_color);
+
+    gl.bindBuffer(gl.ARRAY_BUFFER, normal_buffer);
+    gl.vertexAttribPointer(_normal, 3, gl.FLOAT, false, 0, 0);
+    gl.enableVertexAttribArray(_normal);
+    console.log(_normal)
 
     // perbarui sesuai slider
     var mo_matrix = [1, 0, 0, 0,
@@ -157,6 +175,16 @@ function drawScene() {
     gl.uniformMatrix4fv(_Pmatrix, false, proj_matrix);
     gl.uniformMatrix4fv(_Vmatrix, false, view_matrix);
     gl.uniformMatrix4fv(_Mmatrix, false, mo_matrix);
+
+    if (isShading) {
+        shading(mo_matrix, view_matrix);
+    } else {
+        var norm_matrix = [0, 0, 0, 0,
+            0, 0, 0, 0,
+            0, 0, 0, 0,
+            1, 0, 0, 0];
+        gl.uniformMatrix4fv(_Nmatrix, false, norm_matrix);
+    }
 
     // gambar hollow object
     for (var i = 0; i < count; i++) {

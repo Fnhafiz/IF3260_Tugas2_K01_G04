@@ -49,6 +49,17 @@ function changeObject() {
     drawScene();
 }
 
+function shading(mo_matrix, view_matrix) {
+    var model_view_matrix = []
+    model_view_matrix = multiply(mo_matrix, view_matrix);
+
+    var norm_Matrix = [];
+
+    norm_Matrix = invert(model_view_matrix);
+    norm_Matrix = transpose(norm_Matrix);
+    gl.uniformMatrix4fv(_Nmatrix, false, norm_Matrix);
+}
+
 // save all configuration in one array
 document.getElementById("save").addEventListener("click", function (e) {
     let fileName = document.getElementById('filename').value;
