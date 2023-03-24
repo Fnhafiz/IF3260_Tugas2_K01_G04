@@ -5,8 +5,11 @@ var vertices = [];
 var colors = [];
 var verticesLoad = [];
 var colorsLoad = [];
+var verticesMulti = [];
+var colorsMulti = [];
 var count = 0;
 var countLoad = [];
+var countMulti = 0;
 
 vertices = verticesCube.slice();
 colors = colorsCube.slice();
@@ -87,12 +90,23 @@ function drawScene() {
             colors = colorsConfusing.slice();
             count = countConfusing;
         }
+        else if (checked == "multiple") {
+            vertices = verticesMulti.slice();
+            colors = colorsMulti.slice();
+            count = countMulti;
+        }
         else {
             id = checked.slice(-1);
             vertices = verticesLoad[id].slice();
             colors = colorsLoad[id].slice();
             count = countLoad[id];
         }
+    }
+
+    if ((checked == current) && (checked == "multiple")) {
+        vertices = verticesMulti.slice();
+        colors = colorsMulti.slice();
+        count = countMulti;
     }
 
     // store data into vertex and color buffer
