@@ -21,11 +21,7 @@
                 <input type="radio" name="object" value="multiple" id="multiple">
                 <label for="multiple">Multiple</label>
                 <button onclick="changeObject()">Change</button>
-                <br>
-                <label for="shading">Shading: </label>
-                <input type="checkbox" id="shading" name="shading" value="shading" onclick="drawScene();">
             </div>
-            <br>
 
             <h3>Projection</h3>
             <div>
@@ -35,9 +31,8 @@
                 <input type="radio" name="projection" value="perspective">Perspective
                 <button onclick="changeProjection()">Change</button>
             </div>
-            <br>
 
-            <h3>Change Object</h3>
+            <h3>Transform</h3>
             <div>
                 <label for="rotationX">Rotate X:</label>
                 <input type="range" name="rotationX" min="-180" max="180" value="0" id="rotationX"
@@ -57,17 +52,17 @@
             <br>
 
             <div>
-                <label for="translationX">Translation X:</label>
+                <label for="translationX">Translate X:</label>
                 <input type="range" name="translationX" min="-100" max="100" value="0" id="translationX"
                     oninput="slideTranslate(0, this)">
                 <output>0</output>
 
-                <label for="translationY">Translation Y:</label>
+                <label for="translationY">Translate Y:</label>
                 <input type="range" name="translationY" min="-100" max="100" value="0" id="translationY"
                     oninput="slideTranslate(1, this)">
                 <output>0</output>
 
-                <label for="translationZ">Translation Z:</label>
+                <label for="translationZ">Translate Z:</label>
                 <input type="range" name="translationZ" min="-100" max="100" value="0" id="translationZ"
                     oninput="slideTranslate(2, this)">
                 <output>0</output>
@@ -97,7 +92,6 @@
                     oninput="slideScaleAll(this)">
                 <output>1</output>
             </div>
-            <br>
 
             <h3>Camera</h3>
             <div>
@@ -110,16 +104,17 @@
                 <input type="range" name="cam-zoom" min="0" id="cam-zoom" max="3" step="0.05" value="1"
                     oninput="camZoom(this)">
                 <output>1</output>
+                <div>
+                    <label for="fieldOfView">Field of View:</label>
+                    <input type="range" name="fieldOfView" min="1" max="179" value="1" id="fieldOfView"
+                        oninput="updateFieldOfView(this)">
+                    <output>0</output>
+                </div>
             </div>
-            <br>
 
-            <div>
-                <label for="fieldOfView">Field of View:</label>
-                <input type="range" name="fieldOfView" min="1" max="179" value="1" id="fieldOfView"
-                    oninput="updateFieldOfView(this)">
-                <output>0</output>
-            </div>
-            <br>
+            <h3>Color</h3>
+            <label for="shading">Shading: </label>
+            <input type="checkbox" id="shading" name="shading" value="shading" onclick="drawScene();">
 
             <h3>Load/Save</h3>
             <div>
@@ -131,11 +126,47 @@
                 <label for="multiple-load">Load Multiple Model: </label>
                 <input type="checkbox" id="multiple-load" name="multiple-load" value="multiple-load">
             </div>
-            <br>
 
+            <h3>Controls</h3>
             <div>
                 <input type="button" id="reset" name="reset" value="Reset" onclick="reset()">
-                <input type="button" id="help" name="help" value="Help">
+                <input type="button" id="help" name="help" value="Help" onclick="help()">
+            </div>
+            <div id="helps" class="collapse" style="background-color:#bdbdbd; margin-top:10px; margin-bottom:10px; padding:20px; padding-top:5px;">
+                <h3>Object</h3>
+                <ul>
+                    <li>Pilih objek antara <strong>Cube</strong> atau <strong>Confusing</strong> untuk pre-loaded model, lalu klik <strong>Change</strong>.</li>
+                    <li>Pilih <strong>(namafile).json</strong> untuk user-loaded model, lalu klik <strong>Change</strong>.</li>
+                    <li>Pilih <strong>Multiple</strong> untuk user-loaded model dengan metode <strong>Multiple</strong>, lalu klik <strong>Change</strong>.</li>
+                </ul>
+                <h3>Projection</h3>
+                <p style="margin-left:25px;">Pilih tipe proyeksi, lalu klik <strong>Change</strong>.</p>
+                <h3>Transform</h3>
+                <ul>
+                    <li>Geser slider <strong>Rotate</strong> sesuai sumbunya (<strong>X, Y, Z</strong>) untuk merotasi objek sesuai sumbunya.</li>
+                    <li>Geser slider <strong>Translate</strong> sesuai sumbunya (<strong>X, Y, Z</strong>) untuk menggeser objek sesuai sumbunya.</li>
+                    <li>Geser slider <strong>Scale</strong> sesuai sumbunya (<strong>X, Y, Z</strong>) untuk memperbesar/memperkecil objek sesuai sumbunya.</li>
+                    <li>Geser slider <strong>Scale</strong> untuk memperbesar/memperkecil objek langsung pada ketiga sumbu.</li>
+                </ul>
+                <h3>Camera</h3>
+                <ul>
+                    <li>Geser slider <strong>Angle</strong> untuk mengubah arah revolusi kamera terhadap objek.</li>
+                    <li>Geser slider <strong>Zoom</strong> untuk mengatur zoom kamera terhadap objek.</li>
+                    <li>Geser slider <strong>Field of View</strong> untuk mengatur Field of View kamera dalam proyeksi perspective..</li>
+                </ul>
+                <h3>Color</h3>
+                <p style="margin-left:25px;">Klik checkbox <strong>Shading</strong> untuk menyalakan/mematikan efek shading.</p>
+                <h3>Load/Save</h3>
+                <ul>
+                    <li><strong>Save</strong>: Tulis nama file model, lalu klik <strong>Save</strong>. Nama file default adalah <strong>Untitled</strong>.</li>
+                    <li><strong>Load</strong>: Klik <strong>Choose File</strong>, lalu klik <strong>Open</strong> pada dialog box.</li>
+                    <li><strong>Load Multiple</strong>: Jika ingin load banyak model dalam satu kanvas, klik checkbox <strong>Load Multiple File</strong> dulu.</li>
+                </ul>
+                <h3>Controls</h3>
+                <ul>
+                    <li>Klik <strong>Reset</strong> untuk mengembalikan semua parameter Transform ke nilai default.</li>
+                    <li>Klik <strong>Help</strong> untuk menampilkan/menghilangkan bagian Help ini.</li>
+                </ul>
             </div>
         </div>
     </div>

@@ -22,3 +22,7 @@ canvas {
 .action-bar {
     margin-left: 20px;
 }
+
+.collapse {
+    display: none;
+}

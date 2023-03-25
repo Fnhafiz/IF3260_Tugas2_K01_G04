@@ -53,7 +53,6 @@ function updateFieldOfView(obj) {
 
 function changeProjection() {
     projChecked = document.querySelector('input[name="projection"]:checked').value;
-    console.log(projChecked);
     if (projChecked == "perspective") {
         translationVar[2] = (-80 / 50);
     }
@@ -68,12 +67,12 @@ function changeProjection() {
         rotationVar[0] = 0;
         rotationVar[2] = 0;
     }
-    document.getElementById("translationZ").value = translationVar[2]*50;
-    document.getElementById("translationZ").nextElementSibling.value = translationVar[2]*50;
-    document.getElementById("rotationX").value = convRadToDeg(-Math.PI/3);
-    document.getElementById("rotationX").nextElementSibling.value = convRadToDeg(-Math.PI/3);
-    document.getElementById("rotationZ").value = convRadToDeg(Math.PI/6);
-    document.getElementById("rotationZ").nextElementSibling.value = convRadToDeg(Math.PI/6);
+    document.getElementById("translationZ").value = translationVar[2] * 50;
+    document.getElementById("translationZ").nextElementSibling.value = translationVar[2] * 50;
+    document.getElementById("rotationX").value = convRadToDeg(rotationVar[0]);
+    document.getElementById("rotationX").nextElementSibling.value = convRadToDeg(rotationVar[0]);
+    document.getElementById("rotationZ").value = convRadToDeg(rotationVar[2]);
+    document.getElementById("rotationZ").nextElementSibling.value = convRadToDeg(rotationVar[2]);
     drawScene();
 }
 
@@ -168,11 +167,27 @@ document.getElementById("loadfile").addEventListener("change", function (e) {
 
 function reset() {
     translationVar = [0, 0, 0];
-    rotationVar = [-Math.PI / 4, 0, Math.PI / 4];
+    rotationVar = [0, 0, 0];
     scalingVar = [1, 1, 1];
     currentScaleAll = 1;
     scalingZoom = 1;
     cameraAngle = 0;
+
+    projChecked = document.querySelector('input[name="projection"]:checked').value;
+    if (projChecked == "perspective") {
+        translationVar[2] = (-80 / 50);
+    }
+    else {
+        translationVar[2] = (0 / 50);
+    }
+    if (projChecked != "orthographic") {
+        rotationVar[0] = -Math.PI/3;
+        rotationVar[2] = Math.PI/6;
+    }
+    else {
+        rotationVar[0] = 0;
+        rotationVar[2] = 0;
+    }
 
     document.getElementById("rotationX").value = convRadToDeg(rotationVar[0]);
     document.getElementById("rotationX").nextElementSibling.value = convRadToDeg(rotationVar[0]);
@@ -184,8 +199,8 @@ function reset() {
     document.getElementById("translationX").nextElementSibling.value = translationVar[0];
     document.getElementById("translationY").value = translationVar[1];
     document.getElementById("translationY").nextElementSibling.value = translationVar[1];
-    document.getElementById("translationZ").value = translationVar[2];
-    document.getElementById("translationZ").nextElementSibling.value = translationVar[2];
+    document.getElementById("translationZ").value = translationVar[2] * 50;
+    document.getElementById("translationZ").nextElementSibling.value = translationVar[2] * 50;
     document.getElementById("scalingX").value = scalingVar[0];
     document.getElementById("scalingX").nextElementSibling.value = scalingVar[0];
     document.getElementById("scalingY").value = scalingVar[1];
@@ -199,4 +214,12 @@ function reset() {
     document.getElementById("fieldOfView").value = convRadToDeg(fieldOfView);
     document.getElementById("fieldOfView").nextElementSibling.value = convRadToDeg(fieldOfView);
     drawScene();
+}
+
+function help() {
+    if (document.getElementById("helps").classList.contains("collapse")) {
+        document.getElementById("helps").classList.remove("collapse");
+    } else {
+        document.getElementById("helps").classList.add("collapse");
+    }
 }
