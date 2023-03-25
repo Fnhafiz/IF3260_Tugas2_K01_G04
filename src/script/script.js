@@ -63,7 +63,7 @@ var far = 400;
 
 // perspective
 var fieldOfView = convDegToRad(60);
-var aspect = canvas.width/canvas.height;
+var aspect = canvas.width / canvas.height;
 var zNear = 1;
 var zFar = 400;
 
@@ -158,7 +158,8 @@ function drawScene() {
     gl.bindBuffer(gl.ARRAY_BUFFER, color_buffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
 
-    normal = getNormalVector(vertices);
+    // normal = getNormalVector(vertices);
+    normal = normalShade;
     gl.bindBuffer(gl.ARRAY_BUFFER, normal_buffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(normal), gl.STATIC_DRAW);
 
