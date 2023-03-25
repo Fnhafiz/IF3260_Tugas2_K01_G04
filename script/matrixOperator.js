@@ -256,3 +256,39 @@ function getNormalVector(v) {
     }
     return normal;
 } 
+
+function perspective(fieldOfViewInRad, aspect, near, far) {
+    var f = Math.tan(Math.PI * 0.5 - 0.5 * fieldOfViewInRad);
+    var ranges = 1.0 / (near - far);
+
+    return [
+        f/aspect, 0, 0, 0,
+        0, f, 0, 0,
+        0, 0, (near + far) * ranges, near * far * ranges * 2,
+        0, 0, -1, 0
+    ];
+}
+
+function orthographic(left, right, bottom, top, near, far) {
+    return [
+        2/(right - left), 0, 0, -(left + right)/(left - right),
+        0, 2/(top - bottom), 0, -(bottom + top)/(bottom - top),
+        0, 0, -2/(near - far), -(near + far)/(near - far),
+        0, 0, 0, 1
+    ]
+}
+
+function oblique(left, right, bottom, top, near, far, theta, phi) {
+    var Morth = [   1, 0, 0, 0, 
+                    0, 1, 0, 0, 
+                    0, 0, 0, 0, 
+                    0, 0, 0, 1];
+    var H = [   1, 0, 0, 0, 
+                0, 1, 0, 0, 
+                1/Math.tan(theta), 1/Math.tan(phi), 1, 0, 
+                0, 0, 0, 1];
+    var ST = orthographic(left, right, bottom, top, near, far);
+    var matrix = multiply(ST, Morth);
+    // matrix = translate(matrix, 0.5, 0.5, 0);
+    return multiply(H, matrix);
+}

@@ -53,6 +53,24 @@ var currentScaleAll = 1;
 var scalingZoom = 1;
 var cameraAngle = 0;
 
+// orthographic
+var left = -1;
+var right = 1;
+var bottom = -1;
+var topo = 1;
+var near = -400;
+var far = 400;
+
+// perspective
+var fieldOfView = convDegToRad(60);
+var aspect = canvas.width/canvas.height;
+var zNear = 1;
+var zFar = 400;
+
+// oblique
+var theta = convDegToRad(60);
+var phi = convDegToRad(60);
+
 // initialize sliders
 document.getElementById("rotationX").value = convRadToDeg(rotationVar[0]);
 document.getElementById("rotationX").nextElementSibling.value = convRadToDeg(rotationVar[0]);
@@ -76,9 +94,12 @@ document.getElementById("cam-zoom").value = scalingZoom;
 document.getElementById("cam-zoom").nextElementSibling.value = scalingZoom;
 document.getElementById("cam-angle").value = cameraAngle;
 document.getElementById("cam-angle").nextElementSibling.value = cameraAngle;
+document.getElementById("fieldOfView").value = convRadToDeg(fieldOfView);
+document.getElementById("fieldOfView").nextElementSibling.value = convRadToDeg(fieldOfView);
 drawScene();
 
 function drawScene() {
+    // object
     checked = document.querySelector('input[name="object"]:checked').value;
     if (checked != current) {
         current = checked;
@@ -112,6 +133,19 @@ function drawScene() {
         colors = colorsMulti.slice();
         count = countMulti;
     }
+
+    // projection
+    projChecked = document.querySelector('input[name="projection"]:checked').value;
+    if (projChecked == "orthographic") {
+        proj_matrix = orthographic(left, right, bottom, topo, near, far);
+    }
+    else if (projChecked == "perspective") {
+        proj_matrix = perspective(fieldOfView, aspect, zNear, zFar);
+    }
+    else {
+        proj_matrix = oblique(left, right, bottom, topo, near, far, theta, phi);
+    }
+    console.log(proj_matrix);
 
     let check_shading = document.getElementById('shading');
     isShading = check_shading.checked;

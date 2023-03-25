@@ -45,6 +45,23 @@ function camAngle(obj) {
     drawScene();
 }
 
+function updateFieldOfView(obj) {
+    fieldOfView = convDegToRad(obj.value);
+    obj.nextElementSibling.value = obj.value;
+    drawScene();
+}
+
+function changeProjection() {
+    projChecked = document.querySelector('input[name="projection"]:checked').value;
+    if (projChecked == "perspective") {
+        var start = -80;
+        translationVar[2] = (start / 50);
+        document.getElementById("translationZ").value = start;
+        document.getElementById("translationZ").nextElementSibling.value = start;
+    }
+    drawScene();
+}
+
 function changeObject() {
     drawScene();
 }
@@ -119,7 +136,6 @@ document.getElementById("loadfile").addEventListener("change", function (e) {
             countLoad.push(data[2]);
         }
 
-
         //add to object list
         var lastObject = document.getElementById("confusing");
         var input = document.createElement("input");
@@ -165,5 +181,7 @@ function reset() {
     document.getElementById("cam-zoom").nextElementSibling.value = scalingZoom;
     document.getElementById("cam-angle").value = cameraAngle;
     document.getElementById("cam-angle").nextElementSibling.value = cameraAngle;
+    document.getElementById("fieldOfView").value = convRadToDeg(fieldOfView);
+    document.getElementById("fieldOfView").nextElementSibling.value = convRadToDeg(fieldOfView);
     drawScene();
 }
