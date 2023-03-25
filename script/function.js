@@ -134,3 +134,36 @@ document.getElementById("loadfile").addEventListener("change", function (e) {
         input.after(label);
     }
 });
+
+function reset() {
+    translationVar = [0, 0, 0];
+    rotationVar = [-Math.PI / 4, 0, Math.PI / 4];
+    scalingVar = [1, 1, 1];
+    currentScaleAll = 1;
+    scalingZoom = 1;
+    cameraAngle = 0;
+
+    document.getElementById("rotationX").value = convRadToDeg(rotationVar[0]);
+    document.getElementById("rotationX").nextElementSibling.value = convRadToDeg(rotationVar[0]);
+    document.getElementById("rotationY").value = convRadToDeg(rotationVar[1]);
+    document.getElementById("rotationY").nextElementSibling.value = convRadToDeg(rotationVar[1]);
+    document.getElementById("rotationZ").value = convRadToDeg(rotationVar[2]);
+    document.getElementById("rotationZ").nextElementSibling.value = convRadToDeg(rotationVar[2]);
+    document.getElementById("translationX").value = translationVar[0];
+    document.getElementById("translationX").nextElementSibling.value = translationVar[0];
+    document.getElementById("translationY").value = translationVar[1];
+    document.getElementById("translationY").nextElementSibling.value = translationVar[1];
+    document.getElementById("translationZ").value = translationVar[2];
+    document.getElementById("translationZ").nextElementSibling.value = translationVar[2];
+    document.getElementById("scalingX").value = scalingVar[0];
+    document.getElementById("scalingX").nextElementSibling.value = scalingVar[0];
+    document.getElementById("scalingY").value = scalingVar[1];
+    document.getElementById("scalingY").nextElementSibling.value = scalingVar[1];
+    document.getElementById("scalingZ").value = scalingVar[2];
+    document.getElementById("scalingZ").nextElementSibling.value = scalingVar[2];
+    document.getElementById("cam-zoom").value = scalingZoom;
+    document.getElementById("cam-zoom").nextElementSibling.value = scalingZoom;
+    document.getElementById("cam-angle").value = cameraAngle;
+    document.getElementById("cam-angle").nextElementSibling.value = cameraAngle;
+    drawScene();
+}

@@ -127,7 +127,6 @@ function drawScene() {
     normal = getNormalVector(vertices);
     gl.bindBuffer(gl.ARRAY_BUFFER, normal_buffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(normal), gl.STATIC_DRAW);
-    console.log(normal);
 
 
     gl.viewport(0.0, 0.0, canvas.width, canvas.height);
@@ -152,7 +151,6 @@ function drawScene() {
     gl.bindBuffer(gl.ARRAY_BUFFER, normal_buffer);
     gl.vertexAttribPointer(_normal, 3, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(_normal);
-    console.log(_normal)
 
     // perbarui sesuai slider
     var mo_matrix = [1, 0, 0, 0,
@@ -191,3 +189,4 @@ function drawScene() {
         gl.drawArrays(gl.TRIANGLE_FAN, i * 4, 4);
     }
 }
+
