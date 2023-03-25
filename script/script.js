@@ -69,7 +69,7 @@ var zFar = 400;
 
 // oblique
 var theta = convDegToRad(60);
-var phi = convDegToRad(60);
+var phi = convDegToRad(89);
 
 // initialize sliders
 document.getElementById("rotationX").value = convRadToDeg(rotationVar[0]);

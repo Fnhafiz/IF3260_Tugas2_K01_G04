@@ -288,7 +288,8 @@ function oblique(left, right, bottom, top, near, far, theta, phi) {
                 1/Math.tan(theta), 1/Math.tan(phi), 1, 0, 
                 0, 0, 0, 1];
     var ST = orthographic(left, right, bottom, top, near, far);
-    var matrix = multiply(ST, Morth);
+    var matrix = multiply(Morth, ST);
     // matrix = translate(matrix, 0.5, 0.5, 0);
-    return multiply(H, matrix);
+    // return multiply(H, matrix);
+    return multiply(matrix, H);
 }
