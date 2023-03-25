@@ -53,12 +53,27 @@ function updateFieldOfView(obj) {
 
 function changeProjection() {
     projChecked = document.querySelector('input[name="projection"]:checked').value;
+    console.log(projChecked);
     if (projChecked == "perspective") {
-        var start = -80;
-        translationVar[2] = (start / 50);
-        document.getElementById("translationZ").value = start;
-        document.getElementById("translationZ").nextElementSibling.value = start;
+        translationVar[2] = (-80 / 50);
     }
+    else {
+        translationVar[2] = (0 / 50);
+    }
+    if (projChecked != "orthographic") {
+        rotationVar[0] = -Math.PI/3;
+        rotationVar[2] = Math.PI/6;
+    }
+    else {
+        rotationVar[0] = 0;
+        rotationVar[2] = 0;
+    }
+    document.getElementById("translationZ").value = translationVar[2]*50;
+    document.getElementById("translationZ").nextElementSibling.value = translationVar[2]*50;
+    document.getElementById("rotationX").value = convRadToDeg(-Math.PI/3);
+    document.getElementById("rotationX").nextElementSibling.value = convRadToDeg(-Math.PI/3);
+    document.getElementById("rotationZ").value = convRadToDeg(Math.PI/6);
+    document.getElementById("rotationZ").nextElementSibling.value = convRadToDeg(Math.PI/6);
     drawScene();
 }
 
