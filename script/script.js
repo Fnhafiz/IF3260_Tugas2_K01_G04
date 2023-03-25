@@ -47,7 +47,7 @@ var view_matrix = [1, 0, 0, 0,
     0, 0, -2, 1
 ];
 var translationVar = [0, 0, 0];
-var rotationVar = [-Math.PI / 4, 0, Math.PI / 4];
+var rotationVar = [0, 0, 0];
 var scalingVar = [1, 1, 1];
 var currentScaleAll = 1;
 var scalingZoom = 1;
